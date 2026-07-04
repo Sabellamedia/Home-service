@@ -55,6 +55,7 @@ export const BUSINESS_INFO = {
   sameAs: [
     'https://www.instagram.com/apr_handyman',
     'https://www.google.com/maps/place/APR+Handyman',
+    'https://share.google/eELdcuHONKoJpBy2v',
   ],
 };
 
