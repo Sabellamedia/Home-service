@@ -1,0 +1,144 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import SchemaOrg from '../components/SchemaOrg.astro';
+import { buildLocalBusinessSchema, buildWebsiteSchema } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  ogImage?: string;
+  ogType?: string;
+  noIndex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/images/og-default.jpg',
+  ogType = 'website',
+  noIndex = false,
+  schema,
+} = Astro.props;
+
+const siteUrl = 'https://apr-handyman.com';
+const canonicalUrl = canonical ? `${siteUrl}${canonical}` : `${siteUrl}${Astro.url.pathname}`;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+const localBusinessSchema = buildLocalBusinessSchema();
+const websiteSchema = buildWebsiteSchema();
+
+const schemas = [
+  localBusinessSchema,
+  websiteSchema,
+  ...(schema ? (Array.isArray(schema) ? schema : [schema]) : []),
+];
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="APR Handyman / Almans Property Remodelling LLC" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={canonicalUrl} />
+
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {!noIndex && <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="APR Handyman" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImage} />
+
+    <!-- Local Business Meta -->
+    <meta name="geo.region" content="US-FL" />
+    <meta name="geo.placename" content="Jacksonville, Florida" />
+    <meta name="geo.position" content="30.3322;-81.6557" />
+    <meta name="ICBM" content="30.3322, -81.6557" />
+
+    <!-- Preconnects for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+
+    <!-- Google Fonts - Inter -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" />
+
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+
+    <!-- Structured Data -->
+    <SchemaOrg schema={schemas} />
+
+    <!-- Preload hero image for LCP optimization -->
+    <link rel="preload" as="image" href="/images/hero.jpg" fetchpriority="high" />
+  </head>
+
+  <body class="font-sans text-gray-900 bg-white antialiased">
+    <!-- Skip to main content for accessibility -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-gold-500 focus:text-navy-900 focus:font-bold focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+    >
+      Skip to main content
+    </a>
+
+    <Header />
+
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <!-- Performance: defer non-critical scripts -->
+    <script>
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener('click', function (e) {
+          const href = (anchor as HTMLAnchorElement).getAttribute('href');
+          if (href && href !== '#') {
+            const target = document.querySelector(href);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

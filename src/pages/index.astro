@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import About from '../components/About.astro';
+import Testimonials from '../components/Testimonials.astro';
+import Reviews from '../components/Reviews.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import LocalSeo from '../components/LocalSeo.astro';
+import { buildFAQSchema } from '../lib/schema';
+import { faqs } from '../data/faq';
+
+const faqSchema = buildFAQSchema(faqs.slice(0, 5));
+---
+
+<Layout
+  title="APR Handyman | Jacksonville's Trusted Handyman & Remodeling Experts"
+  description="Professional handyman and remodeling services in Jacksonville, FL. German precision, 20+ years experience. Serving Ponte Vedra, Fleming Island, Orange Park & all of NE Florida. Free estimates."
+  canonical="/"
+  schema={faqSchema}
+>
+  <Hero />
+  <Reviews />
+  <Services />
+  <About compact />
+  <Testimonials limit={3} />
+  <FAQ limit={5} heading="Common Questions About APR Handyman" />
+  <LocalSeo compact />
+  <CTA variant="gold" />
+</Layout>

@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Thank You | APR Handyman Jacksonville FL"
+  description="Thank you for contacting APR Handyman. We'll be in touch within 24 hours."
+  noIndex={true}
+>
+  <section class="min-h-[70vh] flex items-center justify-center bg-gray-50">
+    <div class="max-w-lg mx-auto px-4 sm:px-6 py-16 text-center">
+      <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold text-navy-900 mb-4">Message Received!</h1>
+      <p class="text-gray-600 text-lg leading-relaxed mb-3">
+        Thank you for reaching out to APR Handyman. We've received your request and will respond within 24 hours, Monday through Saturday.
+      </p>
+      <p class="text-gray-600 mb-8">
+        For urgent needs, please call us directly at{' '}
+        <a href="tel:+19045326383" class="text-navy-800 font-semibold hover:text-gold-600 transition-colors">
+          (904) 532-6383
+        </a>.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="inline-flex items-center justify-center gap-2 bg-navy-800 hover:bg-navy-700 text-white font-bold px-6 py-3 rounded-xl transition-colors">
+          Back to Home
+        </a>
+        <a href="/services" class="inline-flex items-center justify-center gap-2 border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white font-bold px-6 py-3 rounded-xl transition-colors">
+          Browse Services
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

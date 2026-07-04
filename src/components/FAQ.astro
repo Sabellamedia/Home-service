@@ -1,0 +1,127 @@
+---
+import { faqs } from '../data/faq';
+
+interface Props {
+  limit?: number;
+  heading?: string;
+}
+
+const {
+  limit = 10,
+  heading = 'Frequently Asked Questions',
+} = Astro.props;
+
+const displayedFaqs = faqs.slice(0, limit);
+---
+
+<section class="py-16 lg:py-24 bg-gray-50" aria-labelledby="faq-heading">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-block text-gold-600 font-semibold text-sm uppercase tracking-wider mb-3">Got Questions?</span>
+      <h2 id="faq-heading" class="text-3xl lg:text-4xl font-bold text-navy-900 mb-4">
+        {heading}
+      </h2>
+      <p class="text-lg text-gray-600">
+        Everything you need to know about working with APR Handyman in Jacksonville.
+      </p>
+    </div>
+
+    <div class="space-y-3" role="list">
+      {displayedFaqs.map((faq, index) => (
+        <div
+          class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm"
+          role="listitem"
+          itemscope
+          itemtype="https://schema.org/Question"
+        >
+          <button
+            class="w-full text-left px-6 py-5 flex items-start justify-between gap-4 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-navy-800 focus:ring-inset"
+            aria-expanded="false"
+            aria-controls={`faq-answer-${index}`}
+            id={`faq-question-${index}`}
+            type="button"
+          >
+            <span class="font-semibold text-navy-900 text-base leading-snug" itemprop="name">
+              {faq.question}
+            </span>
+            <svg
+              class="faq-icon w-5 h-5 text-gold-500 flex-shrink-0 mt-0.5 transition-transform duration-200"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+          </button>
+          <div
+            id={`faq-answer-${index}`}
+            class="hidden px-6 pb-5"
+            role="region"
+            aria-labelledby={`faq-question-${index}`}
+            itemscope
+            itemtype="https://schema.org/Answer"
+          >
+            <p class="text-gray-700 leading-relaxed text-sm" itemprop="text">
+              {faq.answer}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Still have questions? -->
+    <div class="mt-12 text-center bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+      <h3 class="text-xl font-bold text-navy-900 mb-2">Still have questions?</h3>
+      <p class="text-gray-600 mb-6">
+        We're happy to answer any specific questions about your project. Contact us for a free consultation.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/contact"
+          class="inline-flex items-center justify-center gap-2 bg-navy-800 hover:bg-navy-700 text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+        >
+          Contact Us
+        </a>
+        <a
+          href="tel:+19045326383"
+          class="inline-flex items-center justify-center gap-2 border-2 border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white font-semibold px-6 py-3 rounded-xl transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          Call (904) 532-6383
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const faqButtons = document.querySelectorAll<HTMLButtonElement>('[id^="faq-question-"]');
+
+  faqButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      const answerId = button.getAttribute('aria-controls');
+      const answer = answerId ? document.getElementById(answerId) : null;
+      const icon = button.querySelector<SVGElement>('.faq-icon');
+
+      button.setAttribute('aria-expanded', String(!isExpanded));
+
+      if (answer) {
+        answer.classList.toggle('hidden', isExpanded);
+      }
+
+      if (icon) {
+        if (!isExpanded) {
+          icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />';
+          icon.classList.add('rotate-0');
+        } else {
+          icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />';
+        }
+      }
+    });
+  });
+</script>

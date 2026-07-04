@@ -1,0 +1,186 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CTA from '../../components/CTA.astro';
+import Services from '../../components/Services.astro';
+import { localAreas } from '../../data/local-areas';
+import { services } from '../../data/services';
+import { buildBreadcrumbSchema, buildServiceSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return localAreas.map((area) => ({
+    params: { slug: area.slug },
+    props: { area },
+  }));
+}
+
+const { area } = Astro.props;
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: 'https://apr-handyman.com/' },
+  { name: 'Service Areas', url: 'https://apr-handyman.com/#service-areas' },
+  { name: area.name, url: `https://apr-handyman.com/local/${area.slug}` },
+]);
+
+const localServiceSchema = buildServiceSchema({
+  name: `Handyman Services in ${area.name}, FL`,
+  description: `Professional handyman and remodeling services in ${area.name}, ${area.county}. APR Handyman brings 20+ years of experience and German precision craftsmanship to ${area.name} homeowners.`,
+  url: `https://apr-handyman.com/local/${area.slug}`,
+});
+---
+
+<Layout
+  title={area.metaTitle}
+  description={area.metaDescription}
+  canonical={`/local/${area.slug}`}
+  schema={[breadcrumbSchema, localServiceSchema]}
+>
+  <!-- Page Header -->
+  <section class="bg-navy-800 text-white py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></li>
+          <li class="text-gold-400 font-medium" aria-current="page">{area.name}</li>
+        </ol>
+      </nav>
+
+      <div class="flex items-start gap-4 max-w-3xl">
+        <div class="w-14 h-14 bg-gold-500/20 rounded-xl flex items-center justify-center flex-shrink-0 mt-1">
+          <svg class="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+        </div>
+        <div>
+          <span class="text-gold-400 text-sm font-semibold uppercase tracking-wider">Service Area</span>
+          <h1 class="text-4xl lg:text-5xl font-bold mt-1 mb-3">
+            Handyman Services in {area.name}, FL
+          </h1>
+          <p class="text-gray-300 text-lg">{area.description}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="py-16 lg:py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <!-- Article -->
+        <article class="lg:col-span-2" itemscope itemtype="https://schema.org/Service">
+          <meta itemprop="areaServed" content={area.name} />
+          <meta itemprop="provider" content="APR Handyman" />
+
+          <h2 class="text-2xl font-bold text-navy-900 mb-6">
+            APR Handyman in {area.name}, {area.county}
+          </h2>
+
+          <div class="space-y-5">
+            {area.localContext.split('\n\n').map((paragraph) => (
+              <p class="text-gray-700 leading-relaxed">{paragraph}</p>
+            ))}
+          </div>
+
+          <!-- Services in this area -->
+          <div class="mt-10">
+            <h3 class="text-xl font-bold text-navy-900 mb-5">
+              Services Available in {area.name}
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {services.map((service) => (
+                <a
+                  href={`/services/${service.slug}`}
+                  class="flex items-center gap-3 p-3.5 bg-gray-50 rounded-xl border border-gray-100 hover:border-gold-300 hover:bg-gold-50 transition-all group"
+                >
+                  <div class="w-8 h-8 bg-navy-800 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-gold-500 transition-colors">
+                    <div class="w-4 h-4 text-gold-400 group-hover:text-navy-900 transition-colors" set:html={service.icon} aria-hidden="true" />
+                  </div>
+                  <span class="text-sm font-medium text-gray-700 group-hover:text-navy-900">{service.shortTitle}</span>
+                  <svg class="w-4 h-4 text-gray-400 ml-auto group-hover:text-gold-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </a>
+              ))}
+            </div>
+          </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside aria-label="Contact and local area info">
+          <!-- Contact Card -->
+          <div class="bg-navy-800 text-white rounded-2xl p-6 mb-6 sticky top-24">
+            <h3 class="font-bold text-lg mb-2">Free Estimate in {area.name}</h3>
+            <p class="text-gray-300 text-sm mb-5">
+              Contact APR Handyman today for a free, no-obligation estimate on any home service in {area.name}.
+            </p>
+            <a
+              href="/contact#estimate"
+              class="block bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-5 py-3 rounded-xl text-sm text-center transition-colors mb-3"
+            >
+              Request Free Estimate
+            </a>
+            <a
+              href="tel:+19045326383"
+              class="block bg-white/10 hover:bg-white/20 text-white text-center font-semibold px-5 py-3 rounded-xl text-sm transition-colors border border-white/20"
+            >
+              Call (904) 532-6383
+            </a>
+          </div>
+
+          <!-- Nearby Areas -->
+          {area.nearbyAreas.length > 0 && (
+            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100 mb-6">
+              <h4 class="font-semibold text-navy-900 text-sm mb-3">Nearby Areas We Serve</h4>
+              <ul class="space-y-2">
+                {area.nearbyAreas.map((nearby) => {
+                  const nearbyArea = localAreas.find((a) => a.name === nearby);
+                  return (
+                    <li>
+                      {nearbyArea ? (
+                        <a href={`/local/${nearbyArea.slug}`} class="flex items-center gap-2 text-sm text-gray-600 hover:text-navy-800 transition-colors">
+                          <svg class="w-3.5 h-3.5 text-gold-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                          </svg>
+                          {nearby}, FL
+                        </a>
+                      ) : (
+                        <span class="flex items-center gap-2 text-sm text-gray-600">
+                          <svg class="w-3.5 h-3.5 text-gold-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                          </svg>
+                          {nearby}, FL
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          <!-- NAP -->
+          <div class="bg-white rounded-2xl p-5 border border-gray-200 shadow-sm">
+            <h4 class="font-semibold text-navy-900 text-sm mb-3">APR Handyman</h4>
+            <address class="not-italic text-sm space-y-2 text-gray-600">
+              <div>Almans Property Remodelling LLC</div>
+              <div>Jacksonville, FL</div>
+              <div>
+                <a href="tel:+19045326383" class="hover:text-navy-800 transition-colors font-medium">(904) 532-6383</a>
+              </div>
+              <div>
+                <a href="mailto:Service@apr-handyman.com" class="hover:text-navy-800 transition-colors text-xs">Service@apr-handyman.com</a>
+              </div>
+              <div class="text-xs text-gray-400">Mon–Sat 8am–6pm</div>
+            </address>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <CTA
+    heading={`Ready to Start Your ${area.name} Home Project?`}
+    subheading={`APR Handyman provides free estimates for all services in ${area.name} and surrounding ${area.county} communities. Contact us today.`}
+  />
+</Layout>

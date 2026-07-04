@@ -1,0 +1,208 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CTA from '../../components/CTA.astro';
+import LocalSeo from '../../components/LocalSeo.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import { services } from '../../data/services';
+import { buildServiceSchema, buildBreadcrumbSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+
+const serviceSchema = buildServiceSchema({
+  name: service.title,
+  description: service.description,
+  url: `https://apr-handyman.com/services/${service.slug}`,
+});
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: 'https://apr-handyman.com/' },
+  { name: 'Services', url: 'https://apr-handyman.com/services' },
+  { name: service.title, url: `https://apr-handyman.com/services/${service.slug}` },
+]);
+
+const relatedServices = services
+  .filter((s) => s.slug !== service.slug)
+  .slice(0, 3);
+---
+
+<Layout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  canonical={`/services/${service.slug}`}
+  schema={[serviceSchema, breadcrumbSchema]}
+>
+  <!-- Page Header -->
+  <section class="bg-navy-800 text-white py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </li>
+          <li><a href="/services" class="hover:text-white transition-colors">Services</a></li>
+          <li aria-hidden="true">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </li>
+          <li class="text-gold-400 font-medium" aria-current="page">{service.shortTitle}</li>
+        </ol>
+      </nav>
+
+      <div class="flex items-start gap-6 max-w-4xl">
+        <div class="w-16 h-16 bg-gold-500/20 rounded-2xl flex items-center justify-center flex-shrink-0 mt-1">
+          <div class="w-9 h-9 text-gold-400" set:html={service.icon} aria-hidden="true" />
+        </div>
+        <div>
+          <span class="inline-block text-gold-400 font-semibold text-sm uppercase tracking-wider mb-2">Service</span>
+          <h1 class="text-4xl lg:text-5xl font-bold mb-4">{service.title} in Jacksonville, FL</h1>
+          <p class="text-gray-300 text-lg leading-relaxed max-w-2xl">{service.description}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <!-- Article Content -->
+      <article class="lg:col-span-2" aria-labelledby="service-detail-heading">
+        <h2 id="service-detail-heading" class="sr-only">{service.title} — Detailed Information</h2>
+        <div class="prose prose-lg prose-navy max-w-none">
+          {service.fullDescription.split('\n\n').map((paragraph) => (
+            <p class="text-gray-700 leading-relaxed mb-5 text-base">{paragraph}</p>
+          ))}
+        </div>
+
+        <!-- Service Features -->
+        {service.features.length > 0 && (
+          <div class="mt-10 bg-gray-50 rounded-2xl p-6 lg:p-8 border border-gray-100">
+            <h3 class="text-xl font-bold text-navy-900 mb-5">
+              What's Included in Our {service.shortTitle} Services
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {service.features.map((feature) => (
+                <div class="flex items-start gap-3">
+                  <svg class="w-5 h-5 text-gold-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
+                  <span class="text-gray-700 text-sm">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </article>
+
+      <!-- Sidebar -->
+      <aside aria-label="Contact and service information">
+        <!-- Contact Card -->
+        <div class="bg-navy-800 text-white rounded-2xl p-6 mb-6 sticky top-24">
+          <h3 class="font-bold text-lg mb-2">Get a Free Estimate</h3>
+          <p class="text-gray-300 text-sm mb-5">
+            Ready to get started on your {service.shortTitle.toLowerCase()} project? Contact us today for a free, no-obligation estimate.
+          </p>
+          <div class="space-y-3">
+            <a
+              href="/contact#estimate"
+              class="flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-5 py-3 rounded-xl text-sm transition-colors w-full"
+            >
+              Request Free Estimate
+            </a>
+            <a
+              href="tel:+19045326383"
+              class="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-5 py-3 rounded-xl text-sm transition-colors border border-white/20 w-full"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
+              (904) 532-6383
+            </a>
+          </div>
+
+          <div class="mt-5 pt-5 border-t border-navy-700">
+            <div class="text-gray-300 text-xs space-y-2">
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Mon–Sat: 8am–6pm
+              </div>
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+                Licensed & Insured
+              </div>
+              <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-gold-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                Jacksonville & NE Florida
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- All Services link -->
+        <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+          <h4 class="font-semibold text-navy-900 text-sm mb-3">All Our Services</h4>
+          <nav aria-label="All services navigation">
+            <ul class="space-y-1">
+              {services.map((s) => (
+                <li>
+                  <a
+                    href={`/services/${s.slug}`}
+                    class={`block px-3 py-2 rounded-lg text-sm transition-colors ${
+                      s.slug === service.slug
+                        ? 'bg-navy-800 text-white font-medium'
+                        : 'text-gray-700 hover:bg-navy-50 hover:text-navy-800'
+                    }`}
+                    aria-current={s.slug === service.slug ? 'page' : undefined}
+                  >
+                    {s.shortTitle}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <!-- Related Services -->
+  <section class="bg-gray-50 py-16" aria-labelledby="related-services-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="related-services-heading" class="text-2xl font-bold text-navy-900 mb-8">
+        Other Services in Jacksonville, FL
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {relatedServices.map((s) => (
+          <ServiceCard
+            slug={s.slug}
+            title={s.title}
+            shortTitle={s.shortTitle}
+            description={s.description}
+            icon={s.icon}
+            compact
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <LocalSeo compact />
+  <CTA />
+</Layout>

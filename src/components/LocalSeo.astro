@@ -1,0 +1,75 @@
+---
+import { localAreas } from '../data/local-areas';
+
+interface Props {
+  currentArea?: string;
+  compact?: boolean;
+}
+
+const { currentArea, compact = false } = Astro.props;
+---
+
+<section class={`${compact ? 'py-10' : 'py-14'} bg-white border-t border-gray-100`} aria-labelledby="service-areas-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-8">
+      <h2 id="service-areas-heading" class={`font-bold text-navy-900 mb-2 ${compact ? 'text-xl' : 'text-2xl lg:text-3xl'}`}>
+        Serving Jacksonville & All of Northeast Florida
+      </h2>
+      <p class="text-gray-600 text-sm lg:text-base max-w-2xl mx-auto">
+        APR Handyman provides professional handyman and remodeling services throughout Duval County, Clay County, and St. Johns County.
+      </p>
+    </div>
+
+    <!-- Areas Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-8">
+      {localAreas.map((area) => (
+        <a
+          href={`/local/${area.slug}`}
+          class={`group flex items-center gap-2 px-3 py-2.5 rounded-lg border transition-all text-sm ${
+            currentArea === area.slug
+              ? 'bg-navy-800 border-navy-800 text-white'
+              : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-navy-800 hover:border-navy-800 hover:text-white'
+          }`}
+        >
+          <svg class="w-3.5 h-3.5 flex-shrink-0 opacity-70" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+          {area.name}
+        </a>
+      ))}
+    </div>
+
+    <!-- NAP Block (for local SEO) -->
+    <div class="bg-navy-800 text-white rounded-2xl p-6 lg:p-8">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+        <div>
+          <div class="text-gold-400 font-bold text-lg mb-1">APR Handyman</div>
+          <div class="text-gray-300 text-sm">Almans Property Remodelling LLC</div>
+          <div class="text-gray-400 text-xs mt-1">Jacksonville, FL 32210</div>
+        </div>
+        <div>
+          <a href="tel:+19045326383" class="text-gold-400 font-bold text-lg hover:text-gold-300 transition-colors mb-1 block">
+            (904) 532-6383
+          </a>
+          <a href="mailto:Service@apr-handyman.com" class="text-gray-300 text-sm hover:text-white transition-colors block">
+            Service@apr-handyman.com
+          </a>
+          <div class="text-gray-400 text-xs mt-1">Mon–Sat 8am–6pm · 24/7 Emergency</div>
+        </div>
+        <div>
+          <div class="text-gray-300 text-sm mb-2">Serving Duval, Clay & St. Johns Counties</div>
+          <a
+            href="/contact"
+            class="inline-flex items-center gap-1.5 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-4 py-2 rounded-lg text-sm transition-colors"
+          >
+            Free Estimate
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

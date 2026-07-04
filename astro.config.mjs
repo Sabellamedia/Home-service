@@ -7,9 +7,7 @@ export default defineConfig({
   output: 'static',
   integrations: [
     tailwind(),
-    sitemap({
-      filter: (page) => !page.includes('/draft/'),
-    }),
+    sitemap(),
   ],
   compressHTML: true,
   build: {

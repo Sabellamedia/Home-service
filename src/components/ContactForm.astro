@@ -1,0 +1,195 @@
+---
+import { services } from '../data/services';
+---
+
+<!-- Contact Form Component
+     This form is configured for multiple submission backends:
+     1. Netlify Forms: The `netlify` attribute enables Netlify's form handling when deployed to Netlify
+     2. Formspree: Replace action="" with your Formspree endpoint (e.g., https://formspree.io/f/your-id)
+     3. Custom API: Replace action="" and add a fetch() call in the <script> block below
+
+     To use Netlify Forms:
+     - Deploy to Netlify
+     - The `netlify` attribute and `data-netlify="true"` will auto-detect the form
+     - Form submissions appear in Netlify dashboard under Forms
+
+     To use Formspree:
+     - Sign up at formspree.io
+     - Create a new form and get your endpoint URL
+     - Set action="https://formspree.io/f/YOUR_FORM_ID"
+-->
+
+<div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 lg:p-8" id="estimate">
+  <div class="mb-6">
+    <h2 class="text-2xl lg:text-3xl font-bold text-navy-900 mb-2">Get Your Free Estimate</h2>
+    <p class="text-gray-600">Tell us about your project and we'll respond within 24 hours. No obligation, no pressure.</p>
+  </div>
+
+  <form
+    name="contact"
+    method="POST"
+    action="/thank-you"
+    netlify
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    class="space-y-5"
+    aria-label="Contact and estimate request form"
+  >
+    <!-- Netlify bot field (hidden) -->
+    <p class="hidden" aria-hidden="true">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+    <input type="hidden" name="form-name" value="contact" />
+
+    <!-- Name & Phone Row -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div>
+        <label for="name" class="block text-sm font-semibold text-gray-700 mb-1.5">
+          Full Name <span class="text-red-500" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          required
+          autocomplete="name"
+          placeholder="John Smith"
+          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm"
+          aria-required="true"
+        />
+      </div>
+      <div>
+        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-1.5">
+          Phone Number <span class="text-red-500" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          required
+          autocomplete="tel"
+          placeholder="(904) 555-0123"
+          class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm"
+          aria-required="true"
+        />
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">
+        Email Address <span class="text-red-500" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        placeholder="john@example.com"
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm"
+        aria-required="true"
+      />
+    </div>
+
+    <!-- Address -->
+    <div>
+      <label for="address" class="block text-sm font-semibold text-gray-700 mb-1.5">
+        Property Address (optional)
+      </label>
+      <input
+        type="text"
+        id="address"
+        name="address"
+        autocomplete="street-address"
+        placeholder="123 Main St, Jacksonville, FL 32210"
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm"
+      />
+    </div>
+
+    <!-- Service Type -->
+    <div>
+      <label for="service" class="block text-sm font-semibold text-gray-700 mb-1.5">
+        Service Needed <span class="text-red-500" aria-hidden="true">*</span>
+      </label>
+      <select
+        id="service"
+        name="service"
+        required
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm bg-white"
+        aria-required="true"
+      >
+        <option value="" disabled selected>Select a service...</option>
+        {services.map((service) => (
+          <option value={service.slug}>{service.title}</option>
+        ))}
+        <option value="other">Other / Not Listed</option>
+      </select>
+    </div>
+
+    <!-- Message -->
+    <div>
+      <label for="message" class="block text-sm font-semibold text-gray-700 mb-1.5">
+        Project Description <span class="text-red-500" aria-hidden="true">*</span>
+      </label>
+      <textarea
+        id="message"
+        name="message"
+        required
+        rows={5}
+        placeholder="Please describe your project or repair need. The more detail you provide, the more accurate our estimate can be. (e.g., 'Need bathroom tile replaced in master bath, approximately 80 sq ft, existing tile needs removal...')"
+        class="w-full px-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-navy-800 focus:border-transparent transition-shadow text-sm resize-y min-h-[120px]"
+        aria-required="true"
+      ></textarea>
+    </div>
+
+    <!-- Photo Upload Note -->
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+      <div class="flex items-start gap-3">
+        <svg class="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+        </svg>
+        <div>
+          <p class="text-sm font-medium text-blue-900">Have photos of your project?</p>
+          <p class="text-xs text-blue-700 mt-0.5">
+            After submitting this form, you can email photos to <a href="mailto:Service@apr-handyman.com" class="underline">Service@apr-handyman.com</a> with your name in the subject line. Photos help us provide a more accurate estimate.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         JOBBER BOOKING WIDGET INTEGRATION POINT
+         ============================================================
+         When Jobber integration is enabled (PUBLIC_JOBBER_ENABLED=true),
+         replace or supplement this form with the JobberBookingWidget component.
+         See src/components/JobberBookingWidget.astro for the embed code.
+
+         To use Jobber's booking widget instead of this form:
+         1. Set PUBLIC_JOBBER_ENABLED=true in your .env file
+         2. Add your Jobber Client Hub ID to the widget component
+         3. Import and use <JobberBookingWidget /> on this page
+         4. Optionally keep this form as a fallback
+
+         Jobber booking widget URL:
+         https://clienthub.getjobber.com/client_hubs/{CLIENT_HUB_ID}/public/work_request/new
+         ============================================================ -->
+
+    <!-- Submit -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
+      <p class="text-xs text-gray-500">
+        <span class="text-red-500">*</span> Required fields.
+        We respond within 24 hours, Monday–Saturday.
+      </p>
+      <button
+        type="submit"
+        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-8 py-4 rounded-xl text-base transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 flex-shrink-0"
+      >
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+        </svg>
+        Send My Request
+      </button>
+    </div>
+  </form>
+</div>

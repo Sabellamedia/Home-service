@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CTA from '../components/CTA.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { buildBreadcrumbSchema } from '../lib/schema';
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: 'https://apr-handyman.com/' },
+  { name: 'About', url: 'https://apr-handyman.com/about' },
+]);
+---
+
+<Layout
+  title="About APR Handyman | Owner Tolga Gürsoy | Jacksonville, FL"
+  description="Learn about APR Handyman owner Tolga Gürsoy — a craftsman from Berlin, Germany with 20+ years experience bringing German precision to Jacksonville, FL homeowners."
+  canonical="/about"
+  schema={breadcrumbSchema}
+>
+  <!-- Page Header -->
+  <section class="bg-navy-800 text-white py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></li>
+          <li class="text-gold-400 font-medium" aria-current="page">About</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">About APR Handyman</h1>
+      <p class="text-gray-300 text-lg max-w-2xl">
+        The story of German craftsmanship, Jacksonville roots, and a commitment to doing things right.
+      </p>
+    </div>
+  </section>
+
+  <!-- Owner Story -->
+  <section class="py-16 lg:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div class="relative">
+          <div class="rounded-2xl overflow-hidden shadow-2xl">
+            <img
+              src="https://apr-handyman.com/wp-content/uploads/tolga-owner.jpg"
+              alt="Tolga Gürsoy, owner of APR Handyman / Almans Property Remodelling LLC, on a job site in Jacksonville, FL"
+              class="w-full h-80 lg:h-[500px] object-cover"
+              width="600"
+              height="500"
+              loading="eager"
+              onerror="this.src='/images/owner-tolga.jpg'"
+            />
+          </div>
+          <div class="absolute -bottom-6 -right-6 hidden lg:block bg-gold-500 text-navy-900 rounded-2xl p-5 shadow-xl">
+            <div class="text-4xl font-bold">20+</div>
+            <div class="text-sm font-medium">Years of Craftsmanship</div>
+          </div>
+        </div>
+
+        <div class="space-y-6 text-gray-700">
+          <div>
+            <span class="inline-block text-gold-600 font-semibold text-sm uppercase tracking-wider mb-2">Our Founder</span>
+            <h2 class="text-3xl font-bold text-navy-900">Tolga Gürsoy</h2>
+            <p class="text-gray-500 text-sm mt-1">Owner, APR Handyman / Almans Property Remodelling LLC · Berlin, Germany → Jacksonville, FL</p>
+          </div>
+
+          <p class="leading-relaxed">
+            I grew up in Berlin in a culture where craftsmanship is a genuine calling. In Germany, a tradesperson who does excellent work isn't just doing a job — they're participating in a tradition of <em>Handwerk</em> that goes back centuries. Precision, quality materials, work that outlasts the people who commissioned it: these aren't aspirational ideals in German trades culture, they're professional expectations.
+          </p>
+          <p class="leading-relaxed">
+            After more than 20 years working in construction and home improvement across Germany and Europe, I came to Jacksonville, Florida. I came because I fell in love with this city — its warmth, its character, its incredible mix of historic neighborhoods and natural beauty. And I stayed because I saw an opportunity: to build a home services business on the values I'd grown up with.
+          </p>
+          <p class="leading-relaxed">
+            I started APR Handyman — Almans Property Remodelling LLC — with a simple proposition. Do the work right. Use the right materials. Prepare every surface properly. Don't cut corners. Communicate honestly. Clean up completely. And stand behind every job until the client is genuinely satisfied.
+          </p>
+          <p class="leading-relaxed">
+            What I found when I started working with Jacksonville homeowners was that they responded powerfully to these standards. Not because this approach was unusual — Jacksonville has many excellent contractors. But because it was consistent. Every job. Every client. Every time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Principles -->
+  <section class="py-16 bg-gray-50" aria-labelledby="principles-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <h2 id="principles-heading" class="text-3xl font-bold text-navy-900 mb-4">
+          The Three Principles of APR Handyman
+        </h2>
+        <p class="text-gray-600">
+          These aren't marketing slogans. They're the operating principles that guide every decision we make.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {[
+          {
+            number: '01',
+            title: 'Quality Workmanship',
+            color: 'text-gold-500',
+            content: `Quality begins before the first tool is picked up. It starts with proper assessment of existing conditions, careful selection of the right materials, and meticulous surface preparation. Most work failures — paint peeling, tiles cracking, caulk failing, wood rotting — trace back to shortcuts in preparation. We don't take those shortcuts.
+
+Every member of the APR Handyman team is held to the same standard: do it the way you'd want it done in your own home. This means checking your work, then checking it again. It means noticing details that aren't part of the scope but affect the quality of the outcome. It means not calling a job done until it actually is done, and done well.`,
+          },
+          {
+            number: '02',
+            title: 'Communication & Transparency',
+            color: 'text-navy-600',
+            content: `The most common complaint homeowners have about contractors isn't quality — it's communication. Work starts without a clear scope. Questions go unanswered. Costs change without explanation. The homeowner doesn't know when to expect the crew or how long the project will take.
+
+At APR Handyman, we believe communication is a professional obligation. Before we start any job, we provide a written scope of work and a detailed estimate. We communicate about scheduling, timing, and any changes that affect cost or timeline before they happen, not after. We answer phone calls and messages promptly. When a project is complete, we walk you through everything we did and confirm your satisfaction before we consider the job closed.`,
+          },
+          {
+            number: '03',
+            title: 'Customer Satisfaction & Trust',
+            color: 'text-green-600',
+            content: `Trust is built slowly and lost quickly. We've built the APR Handyman reputation one satisfied customer at a time, and we protect it fiercely. Every new client relationship begins with a commitment: we will not consider a job finished until you are genuinely happy with the result.
+
+This commitment is possible because we're careful about what we take on. We don't promise results we can't deliver. We don't start projects we can't finish properly. When we tell you something will be done a certain way, by a certain date, for a certain price — we mean it. The consistency between our promises and our performance is the foundation of the trust that Jacksonville homeowners place in APR Handyman.`,
+          },
+        ].map((principle) => (
+          <div class="bg-white rounded-2xl p-8 shadow-md border border-gray-100">
+            <div class={`text-5xl font-black ${principle.color} opacity-20 mb-2`}>{principle.number}</div>
+            <h3 class="text-xl font-bold text-navy-900 mb-4">{principle.title}</h3>
+            <div class="space-y-3">
+              {principle.content.split('\n\n').map((para) => (
+                <p class="text-gray-600 text-sm leading-relaxed">{para}</p>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Area -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-navy-900 mb-4">Serving All of Northeast Florida</h2>
+          <p class="text-gray-700 leading-relaxed mb-6">
+            APR Handyman proudly serves homeowners across the Jacksonville metro area and Northeast Florida. Whether you're in an established neighborhood, a coastal community, or a newer suburban development, we bring the same professionalism to your door.
+          </p>
+          <ul class="grid grid-cols-2 gap-2">
+            {['Jacksonville', 'Ponte Vedra', 'Fleming Island', 'Orange Park', 'Mandarin', 'Riverside', 'San Marco', 'Southside', 'Atlantic Beach', 'Neptune Beach'].map((area) => (
+              <li class="flex items-center gap-2 text-sm text-gray-700">
+                <svg class="w-4 h-4 text-gold-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {area}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <!-- Map placeholder -->
+        <div class="rounded-2xl overflow-hidden shadow-xl bg-gray-100 h-80 flex items-center justify-center" aria-label="Service area map placeholder">
+          <div class="text-center p-8">
+            <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+            </svg>
+            <p class="text-gray-500 text-sm">Jacksonville, FL & Northeast Florida</p>
+            <p class="text-gray-400 text-xs mt-1">Duval · Clay · St. Johns Counties</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Testimonials limit={3} />
+  <CTA variant="gold" />
+</Layout>

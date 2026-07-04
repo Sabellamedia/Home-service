@@ -1,0 +1,72 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import CTA from '../../components/CTA.astro';
+import { blogPosts } from '../../data/blog-posts';
+import { buildBreadcrumbSchema } from '../../lib/schema';
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: 'https://apr-handyman.com/' },
+  { name: 'Blog', url: 'https://apr-handyman.com/blog' },
+]);
+---
+
+<Layout
+  title="Home Improvement Blog | APR Handyman Jacksonville FL"
+  description="Expert home improvement tips, maintenance guides, and advice for Jacksonville, FL homeowners from APR Handyman. Learn from 20+ years of professional experience."
+  canonical="/blog"
+  schema={breadcrumbSchema}
+>
+  <!-- Page Header -->
+  <section class="bg-navy-800 text-white py-16 lg:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></li>
+          <li class="text-gold-400 font-medium" aria-current="page">Blog</li>
+        </ol>
+      </nav>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-4">Home Improvement Tips & Insights</h1>
+      <p class="text-gray-300 text-lg max-w-2xl">
+        Practical advice for Jacksonville homeowners from APR Handyman's owner Tolga Gürsoy. 20+ years of professional experience, shared freely.
+      </p>
+    </div>
+  </section>
+
+  <!-- Blog Grid -->
+  <section class="py-16 lg:py-24 bg-gray-50" aria-labelledby="blog-posts-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="blog-posts-heading" class="text-2xl font-bold text-navy-900 mb-8">Latest Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogPosts.map((post) => (
+          <BlogCard
+            slug={post.slug}
+            title={post.title}
+            excerpt={post.excerpt}
+            publishDate={post.publishDate}
+            author={post.author}
+            tags={post.tags}
+            readingTime={post.readingTime}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Topics by Service -->
+  <section class="py-12 bg-white" aria-labelledby="topics-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 id="topics-heading" class="text-xl font-bold text-navy-900 mb-6">Browse by Service</h2>
+      <div class="flex flex-wrap gap-2">
+        {['Home Maintenance', 'Painting', 'Carpentry', 'Remodeling', 'Bathrooms', 'Exterior', 'Jacksonville', 'Seasonal Tips'].map((tag) => (
+          <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm hover:bg-navy-800 hover:text-white transition-colors cursor-pointer">
+            {tag}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTA />
+</Layout>

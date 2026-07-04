@@ -1,0 +1,184 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import CTA from '../../components/CTA.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import { blogPosts } from '../../data/blog-posts';
+import { buildBlogPostSchema, buildBreadcrumbSchema } from '../../lib/schema';
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.publishDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const blogSchema = buildBlogPostSchema({
+  title: post.title,
+  excerpt: post.excerpt,
+  publishDate: post.publishDate,
+  author: post.author,
+  url: `https://apr-handyman.com/blog/${post.slug}`,
+});
+
+const breadcrumbSchema = buildBreadcrumbSchema([
+  { name: 'Home', url: 'https://apr-handyman.com/' },
+  { name: 'Blog', url: 'https://apr-handyman.com/blog' },
+  { name: post.title, url: `https://apr-handyman.com/blog/${post.slug}` },
+]);
+
+const relatedPosts = blogPosts.filter((p) => p.slug !== post.slug);
+---
+
+<Layout
+  title={post.metaTitle}
+  description={post.metaDescription}
+  canonical={`/blog/${post.slug}`}
+  ogType="article"
+  schema={[blogSchema, breadcrumbSchema]}
+>
+  <!-- Page Header -->
+  <section class="bg-navy-800 text-white py-14 lg:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav aria-label="Breadcrumb" class="mb-6">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li><a href="/" class="hover:text-white transition-colors">Home</a></li>
+          <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></li>
+          <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
+          <li aria-hidden="true"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg></li>
+          <li class="text-gold-400 font-medium truncate max-w-xs" aria-current="page">{post.title}</li>
+        </ol>
+      </nav>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 mb-5">
+        {post.tags.map((tag) => (
+          <span class="text-xs text-gold-400 bg-gold-500/20 px-3 py-1 rounded-full">{tag}</span>
+        ))}
+      </div>
+
+      <h1 class="text-3xl lg:text-5xl font-bold leading-tight mb-5">{post.title}</h1>
+
+      <div class="flex items-center gap-4 text-gray-400 text-sm">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 bg-gold-500 rounded-full flex items-center justify-center">
+            <span class="text-navy-900 font-bold text-sm">T</span>
+          </div>
+          <span class="text-gray-200">By {post.author}</span>
+        </div>
+        <span aria-hidden="true">·</span>
+        <time datetime={post.publishDate}>{formattedDate}</time>
+        <span aria-hidden="true">·</span>
+        <span>{post.readingTime} min read</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Article Content -->
+  <article class="py-12 lg:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        <!-- Main Content -->
+        <div class="lg:col-span-3">
+          <!-- Excerpt / Lead -->
+          <p class="text-xl text-gray-700 leading-relaxed mb-8 font-medium border-l-4 border-gold-500 pl-5">
+            {post.excerpt}
+          </p>
+
+          <!-- Article body - process markdown-style content -->
+          <div class="prose prose-lg max-w-none">
+            {post.content.split('\n\n').map((block) => {
+              if (block.startsWith('## ')) {
+                return <h2 class="text-2xl font-bold text-navy-900 mt-10 mb-4">{block.replace('## ', '')}</h2>;
+              } else if (block.startsWith('---')) {
+                return <hr class="my-10 border-gray-200" />;
+              } else if (block.startsWith('— ') || block.startsWith('*')) {
+                return <p class="text-gray-700 leading-relaxed mb-5 italic">{block}</p>;
+              } else {
+                return <p class="text-gray-700 leading-relaxed mb-5">{block}</p>;
+              }
+            })}
+          </div>
+
+          <!-- Author Box -->
+          <div class="mt-12 bg-gray-50 rounded-2xl p-6 border border-gray-100">
+            <div class="flex items-start gap-4">
+              <div class="w-14 h-14 bg-navy-800 rounded-full flex items-center justify-center flex-shrink-0">
+                <span class="text-gold-400 font-bold text-xl">T</span>
+              </div>
+              <div>
+                <div class="font-bold text-navy-900">{post.author}</div>
+                <div class="text-gold-600 text-sm font-medium">Owner, APR Handyman / Almans Property Remodelling LLC</div>
+                <p class="text-gray-600 text-sm mt-2 leading-relaxed">
+                  Tolga Gürsoy is a craftsman from Berlin, Germany with over 20 years of professional home improvement experience. He founded APR Handyman to bring German precision craftsmanship to homeowners across Jacksonville, FL and Northeast Florida.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="lg:col-span-1" aria-label="Article sidebar">
+          <div class="sticky top-24 space-y-6">
+            <!-- CTA Card -->
+            <div class="bg-navy-800 text-white rounded-2xl p-5">
+              <h3 class="font-bold mb-2">Ready for a Free Estimate?</h3>
+              <p class="text-gray-300 text-xs mb-4">APR Handyman serves all of Jacksonville and Northeast Florida.</p>
+              <a href="/contact#estimate" class="block bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold text-sm px-4 py-2.5 rounded-xl text-center transition-colors mb-2">
+                Get Free Estimate
+              </a>
+              <a href="tel:+19045326383" class="block text-center text-gold-400 hover:text-gold-300 font-medium text-sm transition-colors">
+                (904) 532-6383
+              </a>
+            </div>
+
+            <!-- Services -->
+            <div class="bg-gray-50 rounded-2xl p-5 border border-gray-100">
+              <h4 class="font-semibold text-navy-900 text-sm mb-3">Our Services</h4>
+              <ul class="space-y-1.5 text-sm">
+                {['Handyman', 'Maintenance', 'Painting', 'Patio & Deck', 'Remodeling', 'Exterior', 'Carpentry', 'Bathroom'].map((service) => (
+                  <li>
+                    <a href={`/services/${service.toLowerCase().replace(' & ', '-').replace(' ', '-')}`} class="text-gray-600 hover:text-navy-800 transition-colors">
+                      → {service} Services
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </article>
+
+  <!-- Related Posts -->
+  {relatedPosts.length > 0 && (
+    <section class="bg-gray-50 py-14" aria-labelledby="related-posts-heading">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 id="related-posts-heading" class="text-2xl font-bold text-navy-900 mb-8">More from APR Handyman</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {relatedPosts.slice(0, 2).map((related) => (
+            <BlogCard
+              slug={related.slug}
+              title={related.title}
+              excerpt={related.excerpt}
+              publishDate={related.publishDate}
+              author={related.author}
+              tags={related.tags}
+              readingTime={related.readingTime}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CTA variant="navy" />
+</Layout>

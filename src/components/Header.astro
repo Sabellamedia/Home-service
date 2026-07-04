@@ -1,0 +1,145 @@
+---
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/services', label: 'Services' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-navy-800 shadow-lg" role="banner">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 flex-shrink-0" aria-label="APR Handyman — Home">
+        <img
+          src="/images/logo.png"
+          alt="APR Handyman Logo"
+          width="140"
+          height="40"
+          class="h-10 w-auto"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+        />
+        <!-- Fallback logo text -->
+        <div class="hidden items-center gap-2">
+          <div class="w-10 h-10 bg-gold-500 rounded-lg flex items-center justify-center flex-shrink-0">
+            <span class="text-navy-900 font-bold text-lg">A</span>
+          </div>
+          <div>
+            <div class="text-white font-bold text-lg leading-tight">APR Handyman</div>
+            <div class="text-gold-400 text-xs leading-tight">Jacksonville, FL</div>
+          </div>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden lg:flex items-center gap-1">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+              currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+                ? 'text-gold-400 bg-navy-700'
+                : 'text-gray-200 hover:text-white hover:bg-navy-700'
+            }`}
+            aria-current={currentPath === link.href ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+
+      <!-- CTA Button -->
+      <div class="hidden lg:flex items-center gap-4">
+        <a
+          href="tel:+19045326383"
+          class="flex items-center gap-2 text-gold-400 hover:text-gold-300 font-medium text-sm transition-colors"
+          aria-label="Call APR Handyman at (904) 532-6383"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          (904) 532-6383
+        </a>
+        <a
+          href="/contact"
+          class="bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-5 py-2.5 rounded-lg text-sm transition-colors duration-200 shadow-md hover:shadow-lg"
+        >
+          Free Estimate
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button
+        id="mobile-menu-button"
+        type="button"
+        class="lg:hidden text-gray-200 hover:text-white p-2 rounded-md"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open navigation menu"
+      >
+        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+        <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="lg:hidden hidden pb-4" role="navigation" aria-label="Mobile navigation">
+      <div class="flex flex-col gap-1 pt-2 pb-3">
+        {navLinks.map((link) => (
+          <a
+            href={link.href}
+            class={`px-4 py-2.5 rounded-md text-sm font-medium transition-colors ${
+              currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href))
+                ? 'text-gold-400 bg-navy-700'
+                : 'text-gray-200 hover:text-white hover:bg-navy-700'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
+      <div class="flex flex-col gap-3 pt-3 border-t border-navy-700">
+        <a
+          href="tel:+19045326383"
+          class="flex items-center gap-2 text-gold-400 font-medium text-sm px-4"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+          </svg>
+          (904) 532-6383
+        </a>
+        <a
+          href="/contact"
+          class="bg-gold-500 hover:bg-gold-400 text-navy-900 font-bold px-5 py-2.5 rounded-lg text-sm text-center transition-colors mx-4"
+        >
+          Get Free Estimate
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const button = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  if (button && menu && iconOpen && iconClose) {
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', String(!isExpanded));
+      menu.classList.toggle('hidden');
+      iconOpen.classList.toggle('hidden');
+      iconClose.classList.toggle('hidden');
+    });
+  }
+</script>

@@ -1,0 +1,63 @@
+---
+import { services } from '../data/services';
+import ServiceCard from './ServiceCard.astro';
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  limit?: number;
+  showAll?: boolean;
+}
+
+const {
+  heading = 'Expert Home Services in Jacksonville, FL',
+  subheading = 'From minor repairs to major remodels, APR Handyman delivers professional craftsmanship with German precision across Northeast Florida.',
+  limit = 8,
+  showAll = true,
+} = Astro.props;
+
+const displayedServices = services.slice(0, limit);
+---
+
+<section class="py-16 lg:py-24 bg-gray-50" aria-labelledby="services-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Section Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12 lg:mb-16">
+      <span class="inline-block text-gold-600 font-semibold text-sm uppercase tracking-wider mb-3">What We Do</span>
+      <h2 id="services-heading" class="text-3xl lg:text-4xl font-bold text-navy-900 mb-4">
+        {heading}
+      </h2>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        {subheading}
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {displayedServices.map((service) => (
+        <ServiceCard
+          slug={service.slug}
+          title={service.title}
+          shortTitle={service.shortTitle}
+          description={service.description}
+          icon={service.icon}
+          features={service.features}
+        />
+      ))}
+    </div>
+
+    {showAll && (
+      <div class="text-center mt-12">
+        <a
+          href="/services"
+          class="inline-flex items-center gap-2 bg-navy-800 hover:bg-navy-700 text-white font-semibold px-8 py-4 rounded-xl transition-colors duration-200 shadow-md hover:shadow-lg"
+        >
+          View All Services
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </a>
+      </div>
+    )}
+  </div>
+</section>
