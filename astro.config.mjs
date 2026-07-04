@@ -2,15 +2,22 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://apr-handyman.com',
-  output: 'static',
+  output: "hybrid",
+
   integrations: [
     tailwind(),
     sitemap(),
   ],
+
   compressHTML: true,
+
   build: {
     inlineStylesheets: 'auto',
   },
+
+  adapter: cloudflare()
 });
